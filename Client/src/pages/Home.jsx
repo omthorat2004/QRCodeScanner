@@ -3,6 +3,7 @@ import './home.css';
 // Qr Scanner
 import QrScanner from "qr-scanner";
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import QrFrame from "../assets/qr-frame.svg";
 const Home = () => {
     const scanner = useRef(null);
@@ -75,7 +76,8 @@ const Home = () => {
           className="qr-frame"
         />
           {scannedResult && (
-        <p
+        <Link
+        to={scannedResult}
           style={{
             position: "absolute",
             top: 0,
@@ -85,7 +87,7 @@ const Home = () => {
           }}
         >
           Scanned Result: {scannedResult}
-        </p>
+        </Link>
       )}
       </div>
     </div>

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom'
 import './App.css'
+import Navbar from './components/Navbar'
 import Home from './pages/Home'
 import Login from './pages/Login'
 import Sign from './pages/Sign'
@@ -10,10 +11,12 @@ function App() {
   return (
     <>
      <Router>
+      <Navbar/>
         <Routes>
           <Route path='/' element={<Home/>}/>
           <Route path='/login' element={<Login/>}/>
           <Route path='/sign' element={<Sign/>}/>
+          <Route path='/:id' element={<Student/>}/>
         </Routes>
      </Router>
     </>
