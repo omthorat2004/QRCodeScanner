@@ -3,13 +3,14 @@ import './home.css';
 // Qr Scanner
 import QrScanner from "qr-scanner";
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import QrFrame from "../assets/qr-frame.svg";
 const Home = () => {
     const scanner = useRef(null);
     const videoEl = useRef(null);
     const [scannedResult,setScannedResult] = useState('')
     const qrBoxEl = useRef(null);
+    const navigate = useNavigate()
     const [qrOn, setQrOn] = useState(true);
     const onScanSuccess = (result) => {
         // 🖨 Print the "result" to browser console.
@@ -17,6 +18,7 @@ const Home = () => {
         // ✅ Handle success.
         // 😎 You can do whatever you want with the scanned result.
         setScannedResult(result?.data);
+        
       };
     
       // Fail
@@ -76,8 +78,8 @@ const Home = () => {
           className="qr-frame"
         />
           {scannedResult && (
-        <Link
-        to={scannedResult}
+        <a
+        href={scannedResult}
           style={{
             position: "absolute",
             top: 0,
@@ -87,7 +89,7 @@ const Home = () => {
           }}
         >
           Scanned Result: {scannedResult}
-        </Link>
+        </a>
       )}
       </div>
     </div>
