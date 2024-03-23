@@ -5,6 +5,7 @@ import Navbar from './components/Navbar'
 import Home from './pages/Home'
 import Login from './pages/Login'
 import Sign from './pages/Sign'
+import Student from './pages/Student'
 function App() {
   const [count, setCount] = useState(0)
 
