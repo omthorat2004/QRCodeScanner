@@ -1,8 +1,11 @@
 import { Alert, Box, Button, Stack, TextField } from '@mui/material';
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL
+
 const Sign = () => {
   const [error,setError] = useState('')
+  const navigate = useNavigate()
   const [formData,setFormData] = useState({
     name:'',
     email:'',
@@ -20,7 +23,7 @@ const Sign = () => {
     e.preventDefault()
     console.log(formData)
     try{
-      const response = await fetch(`${BACKEND_URL}/sign`,{
+      const response = await fetch(`http://localhost:3001/sign`,{
         method:'POST',
         headers:{
           'Content-Type':'application/json'
@@ -33,7 +36,9 @@ const Sign = () => {
         throw new Error(message)
       }
       const data = await response.json()
-      
+      const {token} = data
+      localStorage.setItem('auth-token',token)
+      navigate('/')
 
     }catch(err){
       console.error(err)

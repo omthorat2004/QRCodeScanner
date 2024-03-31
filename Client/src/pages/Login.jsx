@@ -35,7 +35,7 @@ const Login = () => {
         throw new Error(message)
       } 
       const {token} = await response.json()
-      localStorage.setItem("authToken",token)
+      localStorage.setItem("auth-token",token)
       navigate('/')
     }catch(err){
       console.error(err)
