@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import BarLoader from 'react-spinners/BarLoader';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL
 const Admin = () => {
   const [students,setStudents] = useState([])
   const [loading,setLoading] = useState(false)
@@ -24,11 +27,45 @@ const Admin = () => {
     fetchStudents()
 
   },[])
-  const handleUnverifiedClick = ()=>{
-    console.log('Unverify')
+ 
+  const handleUnverifiedClick = async(email)=>{
+    // console.log('Unverify')
+    try{
+      const response = await fetch(`${BACKEND_URL}/unverify/${email}`,{
+        method:'PATCH',
+        headers:{
+          'Content-Type':'application/json'
+        },
+        body:JSON.stringify({email:email})
+      })
+      if(!response.ok){
+        throw new Error('Server Error')
+      }
+      const {users} = await response.json()
+      setStudents(users)
+    }catch(err){
+      console.log(err)
+      toast.error('Error in Updating student user information')
+    }
   }
-  const handleVerifiedClick = ()=>{
-    console.log('Verify')
+  const handleVerifiedClick =async (email)=>{
+    try{
+      const response = await fetch(`${BACKEND_URL}/verify/${email}`,{
+        method:'PATCH',
+        headers:{
+          'Content-Type':'application/json'
+        },
+        body:JSON.stringify({email:email})
+      })
+      if(!response.ok){
+        throw new Error('Server Error')
+      }
+      const {users} = await response.json()
+      setStudents(users)
+    }catch(err){
+      console.log(err)
+      toast.error('Error in Updating student user information')
+    }
   }
   return (
     <div>
@@ -51,7 +88,7 @@ const Admin = () => {
         <td >{student.name}</td>
         <td >{student.email}</td>
         <td >{student.verified?<p className='text-success'>Verified</p>:<p className='text-danger'>Unverified</p>}</td>
-        <td>{student.verified?<button onDoubleClick={handleUnverifiedClick} className='btn btn-primary'>Unverify</button>:<button className='btn btn-primary'>Verify</button>}</td>
+        <td>{student.verified?<button onDoubleClick={()=>handleUnverifiedClick(student.email)} className='btn btn-primary' >Unverify</button>:<button onDoubleClick={()=>handleVerifiedClick(student.email)} className='btn btn-primary'>Verify</button>}</td>
       </tr>
     })}
     <tr>
@@ -74,6 +111,7 @@ const Admin = () => {
     </tr>
   </tbody>
 </table>
+<ToastContainer/>
     </div>
   );
 }

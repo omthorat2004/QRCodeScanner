@@ -96,7 +96,7 @@ app.patch('/verify',(req,res)=>{
 
 app.get('/students',(req,res)=>{
     try{
-        pool.query('SELECT * FROM students ',(err,result)=>{
+        pool.query('SELECT * FROM students ORDER BY rank ASC ',(err,result)=>{
             if (err) throw err
             return res.status(200).json({users:result})
         })
@@ -104,6 +104,39 @@ app.get('/students',(req,res)=>{
     }catch(err){
         console.log(err)
         return res.status(500).json({message:'Unexpected error occurred'})
+    }
+})
+
+app.patch('/unverify/:email',(req,res)=>{
+    const {email} = req.params
+    try{
+        pool.query('UPDATE students SET verified=0 WHERE email=?',[email],(err,result)=>{
+            if (err) throw err
+            pool.query('SELECT * FROM students ',(err,users)=>{
+                return res.status(200).json({users:users})
+            })
+           
+        })
+
+    }catch(err){
+        console.log(err)
+        return res.status(500).json({message:"Unexpected error occurred"})
+    }
+})
+app.patch('/verify/:email',(req,res)=>{
+    const {email} = req.params
+    try{
+        pool.query('UPDATE students SET verified=1 WHERE email=?',[email],(err,result)=>{
+            if (err) throw err
+            pool.query('SELECT * FROM students ',(err,users)=>{
+                return res.status(200).json({users:users})
+            })
+           
+        })
+
+    }catch(err){
+        console.log(err)
+        return res.status(500).json({message:"Unexpected error occurred"})
     }
 })
 
