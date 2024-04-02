@@ -10,7 +10,7 @@ const Navbar = () => {
     if(token){
       setUserLogin(true)
     }
-  },[])
+  },[location])
   useEffect(()=>{
 
     if(location.pathname=='/'){
@@ -19,7 +19,7 @@ const Navbar = () => {
     else{
       setHomePage(false)
     }
-  },[location.pathname])
+  },[location])
   return (
     <AppBar position='static'>
         <Container maxWidth='xl'>
