@@ -5,6 +5,7 @@ import 'react-toastify/dist/ReactToastify.css';
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL
 const Admin = () => {
   const [students,setStudents] = useState([])
+  const [updated,setUpdated] = useState('')
   const [loading,setLoading] = useState(false)
   const [error,setError] = useState('')
   useEffect(()=>{
@@ -26,7 +27,7 @@ const Admin = () => {
     }
     fetchStudents()
 
-  },[])
+  },[updated])
  
   const handleUnverifiedClick = async(email)=>{
     // console.log('Unverify')
@@ -41,8 +42,8 @@ const Admin = () => {
       if(!response.ok){
         throw new Error('Server Error')
       }
-      const {users} = await response.json()
-      setStudents(users)
+      const {data} = await response.json()
+      setUpdated(data)
     }catch(err){
       console.log(err)
       toast.error('Error in Updating student user information')
@@ -60,8 +61,8 @@ const Admin = () => {
       if(!response.ok){
         throw new Error('Server Error')
       }
-      const {users} = await response.json()
-      setStudents(users)
+      const {data} = await response.json()
+      setUpdated(data)
     }catch(err){
       console.log(err)
       toast.error('Error in Updating student user information')
@@ -69,7 +70,7 @@ const Admin = () => {
   }
   return (
     <div>
-      {loading&&<BarLoader color="#36d7b7" />}
+      {loading&&<BarLoader width='100vw' height='10px' color="#0275d8" />}
       {error&&<div>{error}</div>}
         <table className="table table-striped">
   <thead>
@@ -87,8 +88,8 @@ const Admin = () => {
         <td >{student.rank}</td>
         <td >{student.name}</td>
         <td >{student.email}</td>
-        <td >{student.verified?<p className='text-success'>Verified</p>:<p className='text-danger'>Unverified</p>}</td>
-        <td>{student.verified?<button onDoubleClick={()=>handleUnverifiedClick(student.email)} className='btn btn-primary' >Unverify</button>:<button onDoubleClick={()=>handleVerifiedClick(student.email)} className='btn btn-primary'>Verify</button>}</td>
+        <td >{student.verified==true?<p className='text-success'>Verified</p>:<p className='text-danger'>Unverified</p>}</td>
+        <td>{student.verified==true?<button onDoubleClick={()=>handleUnverifiedClick(student.email)} className='btn btn-primary' >Unverify</button>:<button onDoubleClick={()=>handleVerifiedClick(student.email)} className='btn btn-primary'>Verify</button>}</td>
       </tr>
     })}
     <tr>
